@@ -23,27 +23,32 @@
                                 <p class="text-medium-emphasis">{{ event.venue }}</p>
                             </v-card-text>
                             <v-card-text class="pb-0">
-                                <p class="text-uppercase">Вартість квитка:</p>
-                                <v-form >
-                                <div>
-                                    <input type="radio" id="type1" value="type1" v-model="form.picked" />
-                                    <label for="type1">Ряд 1 - 100 грн.</label>
-                                    <br/>
-                                    <input type="radio" id="type2" value="type2" v-model="form.picked" />
-                                    <label for="type2">Ряд 2 - 200 грн.</label>
-                                    <br/>
-                                    <input type="radio" id="type3" value="type3" v-model="form.picked" />
-                                    <label for="type3">Ряд 3 - 300 грн.</label>
+                                <div v-if="maxPrice">
+                                    <p class="text-uppercase">Вартість квитка:</p>
+                                    <v-form >
+                                        <div v-for="cost in event.costs" :key="cost.name">
+                                            <div v-if="cost.price != 0">
+                                                <input type="radio" :id="cost.name" :value="cost" v-model="form.picked" />
+                                                <label :for="cost.name">{{ cost.full_cost }}</label>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <p v-if="form.picked">Ви обрали квиток вартістю {{ form.picked.price }} грн.</p>
+                                        <br>
+                                        <div>
+                                            <input type="checkbox" id="checkbox" v-model="form.checked" />
+                                            <label for="checkbox">Оплата карткою</label>
+                                        </div>
+                                        <span class="remark">При безготівковій оплаті гарантується знижка 5%</span>
+                                        <br>
+                                        <v-btn class="mt-2"  type="submit" color="indigo" > Купити квиток </v-btn>
+                                    </v-form>
                                 </div>
-                                <br>
-                                <div>
-                                    <input type="checkbox" id="checkbox" v-model="form.checked" />
-                                    <label for="checkbox">Оплата карткою</label>
-                                </div>
-                                <span class="remark">При безготівковій оплаті гарантується знижка 5%</span>
-                                <br> 
-                                <v-btn class="mt-2"  type="submit" color="indigo" > Купити квиток </v-btn>
-                                </v-form>
+                                <div v-else="maxPrice">
+                                    <p class="text-uppercase">Безкоштовно</p>
+                                    <br>
+                                    <v-btn class="mt-2"  type="submit" color="indigo"> Хочу відвідати </v-btn>
+                                </div>    
                             </v-card-text>
                         </v-sheet>
                     </div>
@@ -55,7 +60,7 @@
 </template>
 
 <script>
-import { ref, toRefs, reactive, onMounted, watch} from 'vue'
+import { ref, toRefs, reactive, computed, onMounted, watch} from 'vue'
 import apiClient from '../api';
 
 export default {
@@ -79,6 +84,16 @@ export default {
             getEvent,
         );
 
+        const  maxPrice = computed(() => {
+            let price = 0;
+            for(const cost of event.value.costs) {
+                if (cost.price > price) {
+                    price = cost.price;
+                }
+            }
+            return price;
+        });
+
         const form = reactive({
             picked: '',
             checked: false,
@@ -88,6 +103,7 @@ export default {
            id,
            event, 
            form,
+           maxPrice,
         } 
     }
 }

@@ -24,7 +24,6 @@
                         <p class="text-h6">{{ event.name }}</p>
                         <p class="text-medium-emphasis">{{ event.venue }}</p>
                         <br>
-                        <p class="text-uppercase">Вартість</p>
                     </v-card-text>
                 </div>
             </v-expand-transition>
