@@ -48,8 +48,12 @@ export default {
         const router = useRouter();
 
         const imageUrl = computed(() => {
-            const url = "https://storage.concert.ua/JTU/8/De/6704e41c6a22e/a230.jpg:31-catalog-event_item-desktop2x";
-            return url;
+
+            if (!props.event || !props.event.image) {
+                return ''; // зображення відсутнє
+            }
+
+            return props.event.image; //шлях до зображення
         });
 
         const redirectTo = (event) => {
@@ -64,7 +68,7 @@ export default {
         return {
             show,
             imageUrl,
-            redirectTo
+            redirectTo,
         };
     }
 };

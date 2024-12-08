@@ -8,8 +8,8 @@
                     <div class="d-flex flex-no-wrap justify-space-around">
                         <v-sheet width="45vw">
                             <v-img 
-                            src="https://storage.concert.ua/JTU/8/De/6704e41c6a22e/a230.jpg:31-catalog-event_item-desktop2x" 
-                            cover 
+                                :src="event.image"
+                                cover 
                             />
                             <p class="text-h6">Про подію</p>
                             <v-card-text>
