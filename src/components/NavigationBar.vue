@@ -18,12 +18,10 @@
                     <router-link to="/">
                         <v-btn  color="indigo" class="navigation-btn">Головна</v-btn>
                     </router-link>
-                    <router-link to="/">
+                    <router-link to="/login">
                         <v-btn v-if="!isLogged" color="orange" class="navigation-btn">Увійти</v-btn>
                     </router-link>
-                    <router-link to="/">
-                        <v-btn v-if="isLogged" color="orange" class="navigation-btn">Вийти</v-btn>
-                    </router-link>
+                        <v-btn v-if="isLogged" color="orange"  class="navigation-btn" @click="logOut">Вийти</v-btn>
                 </v-col>
             </v-row>    
         </v-container>
@@ -31,15 +29,36 @@
   </template>
   
   <script>
-    export default {
-        name: 'NavigationBar',
-        data() {
-        return  {
-            isLogged: false,
-        }
+import { auth } from '../auth';
+
+export default {
+    name: 'NavigationBar',
+    data() {
+        return {
+            isLogged: auth.getStatus(), 
+        };
+    },
+    methods: {
+        logOut() {
+            auth.logOut();
+            this.isLogged = false;
+            alert('Ви вийшли');
         },
-    }
-  </script>
+        updateLoggedStatus() {
+            this.isLogged = auth.getStatus();
+        },
+    },
+    mounted() {
+        // Слухаємо подію storage, яка  генерується автоматично при зміні значення в localStorage
+        window.addEventListener('storage', this.updateLoggedStatus);
+    },
+    beforeUnmount() {
+        // Відписуємося від події
+        window.removeEventListener('storage', this.updateLoggedStatus);
+    },
+};
+</script>
+
   
   <style scoped>  
     .logo {

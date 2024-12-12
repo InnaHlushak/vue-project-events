@@ -47,7 +47,7 @@
                                 <div v-else="maxPrice">
                                     <p class="text-uppercase">Безкоштовно</p>
                                     <br>
-                                    <v-btn class="mt-2"  type="submit" color="indigo"> Хочу відвідати </v-btn>
+                                    <v-btn class="mt-2"  type="submit" color="indigo"> Отримати запрошення </v-btn>
                                 </div>    
                             </v-card-text>
                         </v-sheet>
