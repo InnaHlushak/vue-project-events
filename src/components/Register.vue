@@ -130,7 +130,7 @@ export default {
                 } catch (error) {
                     console.log("Registration failed:", error.response);
                     this.errors = error.response.data.errors;
-                    alert('Виникла помилка. Можливо невірне підтвердження паролю');
+                    alert('Виникла помилка. Можливо невірне підтвердження паролю. Або такий користувач уже зареєстрований');
                 }
             } 
         },

@@ -4,6 +4,7 @@ import EventDescription from '../components/EventDescription.vue'
 import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
 import Dashboard from '../components/Dashboard.vue'
+import apiClient from '../api';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,13 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard, 
+      beforeEnter: (to, from, next) => {
+        apiClient.get('/athenticated').then(()=>{
+          next()
+        }).catch(()=>{
+          return next({name:'login'})
+        })
+      }
     },
   ]
 })

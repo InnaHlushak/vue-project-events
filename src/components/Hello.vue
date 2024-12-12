@@ -7,24 +7,20 @@
                 <!-- <Example /> -->
             </div>
         </div>
+        <PopularEvents /> 
         <AllEvents /> 
-        <!-- <router-view /> -->
     </div>
 </template>
 
 <script>
-// import Example from './Example.vue'
+import PopularEvents from './PopularEvents.vue'
 import AllEvents from './AllEvents.vue'
 
 export default {
     name: 'Hello',
     components: {
-        // Example,
+        PopularEvents,
         AllEvents,
-    },
-    setup() {
-        // тут буде решта логіки (реактивні змінні, computed тощо)
-        return {};
     },
 }
 </script>

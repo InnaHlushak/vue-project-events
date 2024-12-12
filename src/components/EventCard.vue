@@ -5,6 +5,10 @@
             <v-card-subtitle>Категорія: {{ event.category }}</v-card-subtitle> 
             <v-card-title>{{ event.name }}</v-card-title>
             <v-card-subtitle>  {{ event.deadline }} </v-card-subtitle>
+            <br>
+            <v-row justify="end">
+                <v-card-subtitle> Популярність:{{ event.popularity }}</v-card-subtitle>
+            </v-row>
             <div>
                 <v-row>
                     <v-col>
@@ -12,7 +16,8 @@
                     </v-col>
                     <v-spacer> </v-spacer>
                     <v-col>
-                        <v-btn color="orange" variant="tonal" @click="redirectTo(event)">Відвідати</v-btn>
+                        <!-- <v-btn color="orange" variant="tonal" @click="redirectTo(event)">Відвідати</v-btn> -->
+                        <v-btn color="orange" variant="tonal" @click="increasePopularityAndRedirectTo">Відвідати</v-btn>
                     </v-col>
                 </v-row>
             </div>
@@ -34,6 +39,7 @@
 <script>
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import apiClient from '../api';
 
 export default {
     name: 'EventCard',
@@ -56,19 +62,40 @@ export default {
             return props.event.image; //шлях до зображення
         });
 
-        const redirectTo = (event) => {
-            router.push({
-                name: 'event-description',
-                params: {
-                    id: event.id,
-                },
-            });
+        // const redirectTo = (event) => {
+        //     router.push({
+        //         name: 'event-description',
+        //         params: {
+        //             id: event.id,
+        //         },
+        //     });
+        // };
+
+        const increasePopularityAndRedirectTo = async () => {
+            try {
+                //const response = await axios.post(`/api/events/${props.event.id}/visit`);
+                const response = await apiClient.post(`/event/${props.event.id}/visit`);
+                if (response.data.success) {
+                    props.event.popularity += 1; // Оновлення локального значення
+                    router.push({
+                        name: 'event-description',
+                        params: {
+                            id: props.event.id,
+                        },
+                    });
+                } else {
+                    console.error('Не вдалося оновити популярність');
+                }
+            } catch (error) {
+                console.error('Помилка при оновленні даних:', error);
+            }
         };
 
         return {
             show,
             imageUrl,
-            redirectTo,
+            //redirectTo,
+            increasePopularityAndRedirectTo,
         };
     }
 };

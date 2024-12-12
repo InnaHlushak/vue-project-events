@@ -74,7 +74,7 @@ export default {
         const getPaginatedList = async (numberPage) => {
             try {
             const response = await apiClient.get('/index?page=' + numberPage);
-            listEvents.value = response.data.data;
+            listEvents.value = response.data.data;            
             } catch (error) {
             console.error('Помилка завантаження даних:', error);
             }

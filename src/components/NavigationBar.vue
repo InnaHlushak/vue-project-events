@@ -43,6 +43,8 @@ export default {
             auth.logOut();
             this.isLogged = false;
             alert('Ви вийшли');
+            //перенаправлення на сторінку login
+            this.$router.push({ name: 'login' });
         },
         updateLoggedStatus() {
             this.isLogged = auth.getStatus();
