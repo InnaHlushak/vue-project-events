@@ -16,7 +16,6 @@
                     </v-col>
                     <v-spacer> </v-spacer>
                     <v-col>
-                        <!-- <v-btn color="orange" variant="tonal" @click="redirectTo(event)">Відвідати</v-btn> -->
                         <v-btn color="orange" variant="tonal" @click="increasePopularityAndRedirectTo">Відвідати</v-btn>
                     </v-col>
                 </v-row>
@@ -62,18 +61,8 @@ export default {
             return props.event.image; //шлях до зображення
         });
 
-        // const redirectTo = (event) => {
-        //     router.push({
-        //         name: 'event-description',
-        //         params: {
-        //             id: event.id,
-        //         },
-        //     });
-        // };
-
         const increasePopularityAndRedirectTo = async () => {
             try {
-                //const response = await axios.post(`/api/events/${props.event.id}/visit`);
                 const response = await apiClient.post(`/event/${props.event.id}/visit`);
                 if (response.data.success) {
                     props.event.popularity += 1; // Оновлення локального значення
@@ -94,7 +83,6 @@ export default {
         return {
             show,
             imageUrl,
-            //redirectTo,
             increasePopularityAndRedirectTo,
         };
     }

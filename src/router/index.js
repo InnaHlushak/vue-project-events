@@ -4,6 +4,8 @@ import EventDescription from '../components/EventDescription.vue'
 import Register from '../components/Register.vue'
 import Login from '../components/Login.vue'
 import Dashboard from '../components/Dashboard.vue'
+import EventInvitation from '../components/EventInvitation.vue'
+import EventTicket from '../components/EventTicket.vue'
 import apiClient from '../api';
 
 const router = createRouter({
@@ -34,6 +36,32 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard, 
+      beforeEnter: (to, from, next) => {
+        apiClient.get('/athenticated').then(()=>{
+          next()
+        }).catch(()=>{
+          return next({name:'login'})
+        })
+      }
+    },
+    {
+      path: '/event-invitation/:id/:number',
+      name: 'event-invitation',
+      component: EventInvitation, 
+      props: true,
+      beforeEnter: (to, from, next) => {
+        apiClient.get('/athenticated').then(()=>{
+          next()
+        }).catch(()=>{
+          return next({name:'login'})
+        })
+      }
+    },
+    {
+      path: '/event-ticket/:id/:type/:price/:number',
+      name: 'event-ticket',
+      component: EventTicket, 
+      props: true,
       beforeEnter: (to, from, next) => {
         apiClient.get('/athenticated').then(()=>{
           next()

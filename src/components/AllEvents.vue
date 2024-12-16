@@ -5,7 +5,7 @@
             <v-container>
                 <v-row>
                     <v-col v-for="event in listEvents" :key="event.id">
-                        <EventCardModal :event="event" />
+                        <EventCard :event="event" />
                     </v-col>
                 </v-row>
                 <v-pagination v-if="currentPage > 0"
@@ -21,13 +21,13 @@
 <script>
 import { ref, toRefs, reactive, computed, onMounted, watch} from 'vue';
 import apiClient from '../api';
-import EventCardModal from './EventCard.vue'
+import EventCard from './EventCard.vue'
 
 
 export default {
     name: 'AllEvents',
     components: {
-        EventCardModal,
+        EventCard,
     },
     setup() {
         // const events = ref([]);

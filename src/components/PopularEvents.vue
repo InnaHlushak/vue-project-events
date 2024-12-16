@@ -5,7 +5,7 @@
             <v-container>
                 <v-row>
                     <v-col v-for="event in events" :key="event.id">
-                        <EventCardModal :event="event" />
+                        <EventCard :event="event" />
                     </v-col>
                 </v-row>
             </v-container> 
@@ -16,13 +16,12 @@
 <script>
 import { ref, toRefs, reactive, computed, onMounted, watch} from 'vue';
 import apiClient from '../api';
-import EventCardModal from './EventCard.vue'
-
+import EventCard from './EventCard.vue'
 
 export default {
     name: 'PopularEvents',
     components: {
-        EventCardModal,
+        EventCard,
     },
     setup() {
         const events = ref([]);
