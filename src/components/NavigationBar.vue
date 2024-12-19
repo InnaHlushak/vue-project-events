@@ -28,7 +28,7 @@
     </div>
   </template>
   
-  <script>
+<script>
 import { auth } from '../auth';
 
 export default {
@@ -62,7 +62,7 @@ export default {
 </script>
 
   
-  <style scoped>  
+<style scoped>  
     .logo {
     display: block;
     margin: 0 2rem 0 0;
@@ -71,5 +71,5 @@ export default {
     .navigation-btn {
         margin: 2px;
     }
-  </style>
+</style>
   

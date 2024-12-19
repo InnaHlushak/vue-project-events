@@ -1,6 +1,5 @@
 <script setup>
 import NavigationBar from './components/NavigationBar.vue'
-import Hello from './components/Hello.vue'
 </script>
 
 <template>

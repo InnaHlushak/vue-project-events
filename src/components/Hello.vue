@@ -3,22 +3,24 @@
         <div class="greetings">
             <div>
                 <h1>Місто, в якому вирує життя</h1>
-                <h2>Гостинно запрошує відвідати події та заходи</h2>
-                <!-- <Example /> -->
+                <h2>Гостинно запрошує відвідати події та заходи</h2>                
             </div>
         </div>
+        <SiteSearch />
         <PopularEvents /> 
         <AllEvents /> 
     </div>
 </template>
 
 <script>
+import SiteSearch from './SiteSearch.vue';
 import PopularEvents from './PopularEvents.vue'
 import AllEvents from './AllEvents.vue'
 
 export default {
     name: 'Hello',
     components: {
+        SiteSearch,
         PopularEvents,
         AllEvents,
     },
