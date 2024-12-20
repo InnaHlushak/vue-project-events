@@ -21,7 +21,7 @@
                                 <p class="text-h6">{{ event.deadline }}</p>
                                 <p class="text-medium-emphasis">{{ event.venue }}</p>
                             </v-card-text>
-                            <v-card-text class="pb-0">
+                            <v-card-text  v-if="!alreadyPassed" class="pb-0">
                                 <div v-if="maxPrice">
                                     <p class="text-uppercase">Вартість квитка:</p>
                                     <v-form>
@@ -41,14 +41,31 @@
                                         </div>
                                         <span class="remark">При безготівковій оплаті гарантується знижка 5%</span>
                                         <br>
-                                        <v-btn class="mt-2"  type="button" color="indigo" @click="getTicket"> Купити квиток </v-btn>
+                                        <v-btn
+                                            class="mt-2"  
+                                            type="button" 
+                                            color="indigo" 
+                                            @click="getTicket"
+                                            > 
+                                                Купити квиток 
+                                            </v-btn>
                                     </v-form>
                                 </div>
                                 <div v-else="maxPrice">
                                     <p class="text-uppercase">Безкоштовно</p>
                                     <br>
-                                    <v-btn class="mt-2"  type="submit" color="indigo" @click="getInvitation"> Отримати запрошення </v-btn>
+                                    <v-btn
+                                        class="mt-2"  
+                                        type="submit" 
+                                        color="indigo" 
+                                        @click="getInvitation"
+                                    > 
+                                        Отримати запрошення 
+                                    </v-btn>
                                 </div>    
+                            </v-card-text>
+                            <v-card-text  v-else class="pb-0">
+                                <p class="warning"> Подія уже відбулася!</p>
                             </v-card-text>
                         </v-sheet>
                     </div>
@@ -71,8 +88,9 @@ export default {
         const router = useRouter();
         const id  = ref(props);
 
-        const event = ref([]); //подія
+        const event = ref([]); //подія        
         const number = ref(0); // поточна кількість учасників
+        const alreadyPassed = ref(false); //true якщо  подія відбулася
         
         const getEvent = async () => {
             try {
@@ -80,6 +98,15 @@ export default {
             if (response.data.data) {      
                 event.value = response.data.data;
                 number.value = event.value.number;
+                
+                // Перетворення дати у формат YYYY-MM-DDTHH:mm:ss
+                const deadlineString = event.value.deadline; 
+                const [day, month, year, time] = deadlineString.split(/[\s-:]/);
+                const formattedDate = `${year}-${month}-${day}T${time}:00`;
+                // Порівняння дедлайну із поточною датою            
+                const deadlineDate = new Date(formattedDate)
+                const now = new Date();
+                alreadyPassed.value = (deadlineDate < now);
             }
             } catch (error) {
             console.error('Помилка завантаження даних:', error);
@@ -169,7 +196,8 @@ export default {
 
         return {
            id,
-           event, 
+           event,
+           alreadyPassed,
            form,
            maxPrice,
            number,

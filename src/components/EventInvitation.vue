@@ -75,11 +75,11 @@ export default {
         const sendInvitation = async () => {
             if (idEvent.value && user.value) {
                 try {
-            const response = await apiClient.get(`/emails/event-invitation/${idEvent.value}/${user.value.id}/${number.value}`);
+            const response = await apiClient.post(`/emails/event-invitation/${idEvent.value}/${user.value.id}/${number.value}`);
                     if (response.data.success) {
                         alert('Запрошення успішно надіслано');
                     } else {
-                        alert('Не вдалося надіслати запрошення');
+                        alert('Не вдалося надіслати запрошення. Або термін події вже пройшов');
                     }
                 } catch (error) {
                     console.error('Помилка при надсиланні запрошення:', error);

@@ -84,11 +84,11 @@ export default {
         const sendTicket = async () => {
             if (idEvent.value && user.value) {
                 try {
-                const response = await apiClient.get(`/emails/event-ticket/${idEvent.value}/${user.value.id}/${typeTicket.value}/${finalPrice.value}/${number.value}`);
+                const response = await apiClient.post(`/emails/event-ticket/${idEvent.value}/${user.value.id}/${typeTicket.value}/${finalPrice.value}/${number.value}`);
                     if (response.data.success) {
                         alert('Квиток успішно надіслано');
                     } else {
-                        alert('Не вдалося надіслати квиток');
+                        alert('Не вдалося надіслати квиток. Або термін події вже пройшов');
                     }
                 } catch (error) {
                     console.error('Помилка при надсиланні квитка:', error);
