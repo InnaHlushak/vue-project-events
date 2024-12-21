@@ -123,13 +123,53 @@ export default {
             }
         };
 
+        //Логіка генерації та завантаження звіту із використанням черг у laravel-додатку
         const downloadPopularityReport = async () => {
             if (user.value) {
-                window.location.href = `${apiClient.defaults.baseURL}/popularity-report`;
-                alert(`Звіт завантажено`);                
+                try {
+                    // Відправляємо запит на генерацію звіту
+                    const response1 = await apiClient.get('/popularity-report');
+
+                    if (response1.data.success) {
+                        // Повідомляємо користувача, що завдання було успішно відправлено в чергу
+                        alert(response1.data.message);
+
+                        // Отримуємо jobId для подальшого запиту на завантаження
+                        const jobId = response1.data.job_id;
+
+                        // Запит на перевірку, чи файл готовий для завантаження
+                        const response2 = await apiClient.get(`/download-popularity-report/${jobId}`);
+
+                        if (response2.data.success === false) {
+                            // Якщо файл не знайдений або завдання ще не завершено, виводимо повідомлення
+                            alert(response2.data.message);
+                        } else {
+                            // Якщо файл готовий, створюємо URL для завантаження
+                            const downloadUrl = `${apiClient.defaults.baseURL}/download-popularity-report/${jobId}`;
+
+                            // Перенаправляємо користувача на URL для завантаження файлу
+                            window.location.href = downloadUrl;
+                        }
+                    } else {
+                        // Якщо завдання не вдалося відправити в чергу, виводимо повідомлення
+                        console.error('Завдання на генерацію звіту не вдалося відправити');
+                    }
+                } catch (error) {
+                    // Логування помилок, якщо запит не вдалося виконати
+                    console.error('Помилка при запиті на генерацію звіту:', error);
+                }
             }
         };
-
+        
+        //-----------------------------------------------------
+        //Проста логіка (без черг) генерації та завантаження звіту
+        //-----------------------------------------------------
+        // const downloadPopularityReport = async () => {
+        //     if (user.value) {
+        //     }
+        // };
+        //-----------------------------------------------------
+                
         return {
             user,
             isAdmin,
