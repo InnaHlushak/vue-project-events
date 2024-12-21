@@ -21,7 +21,7 @@
                 <h2>Вітаємо, {{ user.name }}!</h2>                        
                 <p>Ви маєте можливість створювати та редагувати події:</p>
                 <v-btn
-                    href="http://127.0.0.1:8080/"
+                    href= "http://127.0.0.1:8080/"
                     target="_blank"
                     class="mt-2"
                     type="submit"
@@ -30,62 +30,112 @@
                 >
                     Перейти до панелі адміністратора
                 </v-btn>
+                <br>
+                <p>Ви маєте можливість переглядати звіти:</p>
+                <v-btn
+                    @click="sendAttendanceReport"
+                    class="mt-2"
+                    type="submit"
+                    color="indigo"
+                    block
+                >
+                    Звіт "Статистика відвідуваності подій"
+                </v-btn>
+                <br>
+                <v-btn
+                    @click="downloadPopularityReport"
+                    class="mt-2"
+                    type="submit"
+                    color="indigo"
+                    block
+                >
+                    Звіт "Статистика популярності подій"
+                </v-btn>
             </v-sheet>
         </div>
     </div>
 </template>
 
 <script>
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import apiClient from '../api';
-import { auth } from '../auth'; 
+import { auth } from '../auth';
 
 export default {
     name: 'Dashboard',
-    data() {
-        return {
-            user: null,
-            isAdmin:false,
-        };
-    },
-    async mounted() {
-        if (auth.getStatus()) {
-            await this.getUser();
-        } else {
-            console.warn('Користувач не авторизований');
-        }
+    setup() {
+        const user = ref(null);
+        const isAdmin = ref(false);
 
-        // Слухаємо подію `storage` для оновлення стану
-        window.addEventListener('storage', this.updateStatus);
-    },
-    beforeUnmount() {
-        // Відписуємося від події `storage`
-        window.removeEventListener('storage', this.updateStatus);
-    },
-    methods: {
-        async getUser() {
+        const getUser = async () => {
             try {
                 const response = await apiClient.get('/user');
-                this.user = response.data;
+                user.value = response.data;
 
-                if (this.user && this.user.role) {
-                    this.isAdmin = (this.user.role === 'admin');
+                if (user.value && user.value.role) {
+                    isAdmin.value = (user.value.role === 'admin');
                 } else {
                     console.error('Роль користувача не визначена.');
                 }
-
             } catch (error) {
                 console.error('Помилка завантаження даних:', error);
             }
-        },
-        updateStatus() {
-            // Перевіряємо статус авторизації
+        };
+
+        const updateStatus = () => {
             if (!auth.getStatus()) {
-                this.user = null; // Очистимо дані користувача, якщо він не авторизований
+                user.value = null; // Очистимо дані користувача, якщо він не авторизований
                 console.warn('Користувач вийшов із системи');
             } else {
-                this.getUser(); // Заново завантажуємо дані користувача, якщо авторизований
+                getUser(); // Заново завантажуємо дані користувача, якщо авторизований
             }
-        },
+        };
+
+        onMounted(() => {
+            if (auth.getStatus()) {
+                getUser();
+            } else {
+                console.warn('Користувач не авторизований');
+            }
+
+            // Слухаємо подію `storage` для оновлення стану
+            window.addEventListener('storage', updateStatus);
+        });
+
+        onBeforeUnmount(() => {
+            // Відписуємося від події `storage`
+            window.removeEventListener('storage', updateStatus);
+        });
+
+        const sendAttendanceReport = async () => {
+            if (user.value) {
+                try {
+            const response = await apiClient.post(`/emails/attendance-report/${user.value.id}`);
+                    if (response.data.success) {
+                        alert(`Звіт успішно надіслано на вашу електронну пошту ${user.value.email}`);
+                    } else {
+                        alert('Не вдалося надіслати звіт.');
+
+                    }
+                } catch (error) {
+                    console.error('Помилка при надсиланні:', error);
+                }
+            }
+        };
+
+        const downloadPopularityReport = async () => {
+            if (user.value) {
+                window.location.href = `${apiClient.defaults.baseURL}/popularity-report`;
+                alert(`Звіт завантажено`);                
+            }
+        };
+
+        return {
+            user,
+            isAdmin,
+            sendAttendanceReport,
+            downloadPopularityReport,
+        };
     },
 };
 </script>
