@@ -3,18 +3,20 @@
         <v-container >
             <v-row justify="space-between">
                 <img  class="logo" src="../assets/logo-ivfr.png"  alt="Ivano-Frankivsk logo" width="75" height="75" />
-              <v-col>
-                  <v-tab
-                  align-tabs="start"
-                  color="indigo"
-                  href="https://iftravel.com.ua/"
-                  target="_blank"
-                  >
-                  Івано-Франківськ
-                  </v-tab>
-              </v-col>
-              <v-spacer />
-                <v-col>
+                <v-col class="text-start">
+                    <v-tab
+                    align-tabs="start"
+                    color="indigo"
+                    href="https://iftravel.com.ua/"
+                    target="_blank"
+                    >
+                    Івано-Франківськ
+                    </v-tab>
+                </v-col>
+                <v-col class="text-end">
+                    <router-link to="/dashboard">
+                        <v-btn v-if="isLogged" color="indigo" class="navigation-btn">Панель керування</v-btn>
+                    </router-link>
                     <router-link to="/">
                         <v-btn  color="indigo" class="navigation-btn">Головна</v-btn>
                     </router-link>
@@ -46,7 +48,7 @@ export default {
             //перенаправлення на сторінку login
             this.$router.push({ name: 'login' });
         },
-        updateLoggedStatus() {
+        async updateLoggedStatus() {
             this.isLogged = auth.getStatus();
         },
     },
@@ -60,7 +62,6 @@ export default {
     },
 };
 </script>
-
   
 <style scoped>  
     .logo {

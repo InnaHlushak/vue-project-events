@@ -30,18 +30,8 @@ export default {
         EventCard,
     },
     setup() {
-        // const events = ref([]);
         const listEvents = ref([]);
         const parametersPagination = ref([]);
-
-        // const getEvents = async () => {
-        //     try {
-        //     const response = await apiClient.get('/index');       
-        //     events.value = response.data.data;
-        //     } catch (error) {
-        //     console.error('Помилка завантаження даних:', error);
-        //     }
-        // }
 
         const getParametersPagination = async () => {
             try {
@@ -55,7 +45,6 @@ export default {
         // Завантаження даних для монтування
         onMounted(
             getParametersPagination,
-            // getEvents,
         );
 
         //Параметри для пагінації
@@ -86,7 +75,6 @@ export default {
         });
 
         return {
-            // events,
             currentPage,
             lastPage,
             listEvents,

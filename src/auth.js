@@ -1,18 +1,3 @@
-//методи, які керують станом авторизації
-// export const auth = {
-//     isLogged: () => !!localStorage.getItem('authToken'),
-//     logIn: (token) => {
-//         localStorage.setItem('authToken', token);
-//     },
-//     logOut: () => {
-//         localStorage.removeItem('authToken');
-//     },
-//     updateToken: (newToken) => {
-//         localStorage.setItem('authToken', newToken);
-//     },
-// };
-
-
 // модуль для керування станом авторизації в додатку з використанням токена
 // auth.js
 

@@ -147,7 +147,6 @@ export default {
                 id: props.id,
                 number: number.value,
             };
-            console.log("Делаті запрошення", invitationDetails);
 
             router.push({
                 name: 'event-invitation',
@@ -186,7 +185,6 @@ export default {
                 price: finalPrice.value,
                 number: number.value,
             };
-            console.log("Делаті квитка", ticketDetails);
 
             router.push({
                 name: 'event-ticket',

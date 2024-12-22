@@ -166,10 +166,12 @@ export default {
         //-----------------------------------------------------
         // const downloadPopularityReport = async () => {
         //     if (user.value) {
+            // window.location.href = `${apiClient.defaults.baseURL}/popularity-report`;
+            // alert(`Звіт завантажено`);  
         //     }
         // };
         //-----------------------------------------------------
-                
+
         return {
             user,
             isAdmin,

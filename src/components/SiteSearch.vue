@@ -86,7 +86,7 @@ export default {
             }
 
             try {
-            const response = await apiClient.post(`/events/search/${text.value}`);       
+            const response = await apiClient.get(`/events/search/${text.value}`);       
             parametersPagination.value = response.data.meta;
             } catch (error) {
             console.error('Помилка завантаження даних:', error);
@@ -107,7 +107,7 @@ export default {
         //Пагінований список
         const getPaginatedList = async (numberPage) => {
             try {
-            const response = await apiClient.post(`/events/search/${text.value}?page=` + numberPage);
+            const response = await apiClient.get(`/events/search/${text.value}?page=` + numberPage);
             listEvents.value = response.data.data;            
             } catch (error) {
             console.error('Помилка завантаження даних:', error);

@@ -84,7 +84,15 @@ export default {
         const sendTicket = async () => {
             if (idEvent.value && user.value) {
                 try {
-                const response = await apiClient.post(`/emails/event-ticket/${idEvent.value}/${user.value.id}/${typeTicket.value}/${finalPrice.value}/${number.value}`);
+                const response = await apiClient.post(`/emails/event-ticket`,
+                        {
+                            idEvent: idEvent.value,
+                            idUser: user.value.id,
+                            typeTicket: typeTicket.value,
+                            finalPrice: finalPrice.value,
+                            number: number.value, 
+                        });
+
                     if (response.data.success) {
                         alert('Квиток успішно надіслано');
                     } else {
